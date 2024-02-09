@@ -18,6 +18,10 @@ const CharacterSelection = () => {
         navigate(`/chat/${id}`);
     }
 
+    const handleShoppingCharacter = (id) => {
+        navigate(`/plan/${id}`);
+    }
+
     return (
         <div className="characterSelection">
             {
@@ -47,7 +51,7 @@ const CharacterSelection = () => {
                                 </div>
                             ): (
                                 <div className={"characterSelection-action " + (selectedCharacter.name === character.name? "characterSelection-action--active" : "")}>
-                                    <button className="characterSelection-action-button" onClick={() => window.location.href = '/plan'}>
+                                    <button className="characterSelection-action-button" onClick={() => handleShoppingCharacter(character.id)}>
                                         <FontAwesomeIcon icon={faCartShopping} />
                                     </button>
                                 </div>
