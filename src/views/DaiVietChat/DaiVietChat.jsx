@@ -6,7 +6,7 @@ import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 import characters from '../../services/database';
-
+const API_BASE_URL = 'https://136e-35-247-107-208.ngrok-free.app';
 function removeAccentsAndSpaces(str) {
     // Xóa dấu
     const withoutAccents = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -29,7 +29,6 @@ const DaiVietChat = () => {
         }
     ]);
     const [inputMessage, setInputMessage] = useState('');
-
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -56,15 +55,27 @@ const DaiVietChat = () => {
             sender: 'Chat Bot'
         };
         setMessages([...chatMessages, skeletonMessage]);
-        const response = await fetch(`http://localhost:3005/chat?message=${newMessage.text}`);
+        const payload = {
+            text: newMessage.text, // Assuming newMessage has a 'text' field
+            name: newMessage.name || 'DefaultName' // Use a default name if not provided
+        };
+        console.log(payload)
+        const response = await fetch(`${API_BASE_URL}/character/`, {
+            method: 'POST', // Assuming the API requires a POST request
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
         const data = await response.json();
-        const newMessageRepply = {
-            text: data.text,
-            sentTime: '2024-01-01T12:00:00.000Z',
+        const newMessageReply = {
+            text: data.answer,
+            sentTime: new Date().toISOString(), // Use current time for the reply message
             sender: 'Chat Bot'
         };
-        setMessages([...chatMessages, newMessageRepply]);
-        textToSpeech(data.text);
+        console.log(data.answer)
+        setMessages([...chatMessages, newMessageReply]);
+        textToSpeech(data.answer);
     }
 
     const [speech, setSpeech] = useState('');
@@ -74,7 +85,7 @@ const DaiVietChat = () => {
             const fetchTextToSpeech = async (text) => {
                 console.log('text', text);
 
-                const response = await fetch('https://c6c4-34-145-64-153.ngrok-free.app/text-to-video/', {
+                const response = await fetch(`${API_BASE_URL}/text-to-video/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
