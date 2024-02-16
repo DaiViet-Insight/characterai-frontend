@@ -102,25 +102,25 @@
 }
 
 /* width */
-::-webkit-scrollbar {
+.characterSelection-list::-webkit-scrollbar {
     width: 6px;
     border-radius: 99px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+.characterSelection-list::-webkit-scrollbar-track {
     background: #888;
     border-radius: 99px;
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+.characterSelection-list::-webkit-scrollbar-thumb {
     background: #ddd;
     border-radius: 99px;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.characterSelection-list::-webkit-scrollbar-thumb:hover {
     background: #ddd;
     border-radius: 99px;
 }
