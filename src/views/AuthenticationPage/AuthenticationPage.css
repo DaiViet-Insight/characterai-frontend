@@ -1,0 +1,117 @@
+.authentication-form-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.authentication-form__opacity {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #282c34;
+    opacity: 0.7;
+}
+
+.authentication-form__outer {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 350px;
+}
+
+.authentication-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    scale: 0.5;
+    transition: all 0.3s ease-in-out;
+}
+
+.authentication-form__outer.isShowing .authentication-form {
+    scale: 1;
+}
+
+.authentication-form__title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.authentication-form__input {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.authentication-form__input input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.authentication-form__input input:focus {
+    border: 1px solid #0079D3;
+}
+
+.authentication-form__btn-forgotPass {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+}
+
+.authentication-form__btn-forgotPass button {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0079D3;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.authentication-form__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto 0;
+    gap: 10px;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.authentication-form__button:hover {
+    background-color: #ccc;
+}
+
+.authentication-form__action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6px;
+    gap: 2px;
+}
+
+.authentication-form__action span {
+    font-size: 14px;
+}
+
+.authentication-form__action button {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0079D3;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
