@@ -19,7 +19,7 @@ const CharacterSelection = () => {
     }
 
     const handleShoppingCharacter = (id) => {
-        navigate(`/plan/${id}`);
+        navigate(`/payment/${id}`);
     }
 
     return (
@@ -36,7 +36,7 @@ const CharacterSelection = () => {
             }
             {
                 characters.map((character, index) => (
-                    <>
+                    <div key={index}>
                         <div key={index}
                             className={"characterSelection-description " + (selectedCharacter.name === character.name ? "characterSelection-description__selected" : "")}
                         >
@@ -57,7 +57,7 @@ const CharacterSelection = () => {
                                 </div>
                             )
                         }
-                    </>
+                    </div>
                 ))
             }
             {/* <FontAwesomeIcon icon={faCartShopping} /> */}
