@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import './DaiVietChat.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
-import characters from '../../services/database';
+const serverUrl = "http://localhost:3005";
 const API_BASE_URL = 'https://136e-35-247-107-208.ngrok-free.app';
 function removeAccentsAndSpaces(str) {
     // Xóa dấu
@@ -19,7 +19,27 @@ function removeAccentsAndSpaces(str) {
 
 const DaiVietChat = () => {
     const { id } = useParams();
-    const character = characters.find((character) => character.id === parseInt(id));
+    const [character, setCharacter] = useState({});
+
+    useEffect(() => {
+        const fetchCharacter = async () => {
+            try {
+                const response = await fetch(`${serverUrl}/api/characters/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                });
+                const data = await response.json();
+                setCharacter(data);
+            } catch (error) {
+                console.log("error", error);
+            }
+        }
+
+        fetchCharacter();
+    }, [id]);
 
     const [messages, setMessages] = useState([
         {
@@ -131,7 +151,7 @@ const DaiVietChat = () => {
                         >
                         </video>
                     ) : (
-                        <img src={character.background} alt="background" width={'100%'} />
+                        <img src={`${serverUrl}${character.background}`} alt="background" width={'100%'} />
                     )
                 }
             </div>
@@ -152,7 +172,7 @@ const DaiVietChat = () => {
                                     <div className="chatBox-body-content-message chatBox-message__incoming" key={index}>
                                         <div className="chatBox-body-content-message-item">
                                             <div className="chatBox-body-content-message-item-avatar">
-                                                <img src={character.avatar} alt="avatar" />
+                                                <img src={`${serverUrl}${character.avatar}`} alt="avatar" />
                                             </div>
                                             {
                                                 // (message.text === '...') ? (
