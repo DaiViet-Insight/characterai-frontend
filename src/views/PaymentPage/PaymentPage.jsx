@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import './PaymentPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
-import characters from '../../services/database';
+const serverUrl = "http://localhost:3005";
+
+const toVND = (price) => {
+    try {
+        return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    } catch {
+        return 0;
+    }
+}
 
 const paymentMethods = [
     {
@@ -42,7 +50,27 @@ const paymentMethods = [
 
 const PaymentPage = () => {
     const { id } = useParams();
-    const character = characters.find(character => character.id === parseInt(id));
+    const [character, setCharacter] = useState({});
+
+    useEffect(() => {
+        const fetchCharacter = async () => {
+            try {
+                const response = await fetch(`${serverUrl}/api/characters/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                });
+                const data = await response.json();
+                setCharacter(data);
+            } catch (error) {
+                console.log("error", error);
+            }
+        }
+
+        fetchCharacter();
+    }, [id]);
 
     const [paymentMethod, setPaymentMethod] = useState(null);
 
@@ -60,7 +88,7 @@ const PaymentPage = () => {
                 <div className="payment-page__row">
                     <div className="payment-page-row__info-character">
                         <div className="payment-page__info-character__img">
-                            <img src={character.avatar} alt="character" />
+                            <img src={`${serverUrl}${character.avatar}`} alt="character" />
                         </div>
                         <div className="payment-page__info-character__name">
                             {character.name}
@@ -68,7 +96,7 @@ const PaymentPage = () => {
                     </div>
                     <div className="payment-page-row__line-separate"></div>
                     <div className="payment-page-row__price">
-                        Giá: 100.000 VND
+                        Giá: {toVND(character.price)}
                     </div>
                 </div>
                 <div className="payment-page__content">

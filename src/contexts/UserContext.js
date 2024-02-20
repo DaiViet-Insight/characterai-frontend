@@ -14,23 +14,23 @@ export function UserProvider({ children }) {
     const [user, setUser] = useState(null);
 
     const setProfileInfo = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                return;
-            }
-            const response = await fetch('http://20.236.83.109:3000/api/users/information', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setUser(data);
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        // try {
+        //     const token = localStorage.getItem('token');
+        //     if (!token) {
+        //         return;
+        //     }
+        //     const response = await fetch('http://20.236.83.109:3000/api/users/information', {
+        //         headers: {
+        //             'Authorization': `Bearer ${token}`
+        //         }
+        //     });
+        //     if (response.ok) {
+        //         const data = await response.json();
+        //         setUser(data);
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        // }
     }
 
     useEffect(() => {
