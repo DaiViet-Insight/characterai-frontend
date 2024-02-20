@@ -11,7 +11,7 @@ const typeForm = {
 
 const AuthenticationPage = () => {
     const navigate = useNavigate();
-    const { setIsShowAuthModal } = useUser();
+    const { setIsShowAuthModal, setProfileInfo } = useUser();
 
     const [isShowing, setIsShowing] = useState(false);
     const [type, setType] = useState(typeForm.LOGIN);
@@ -25,30 +25,32 @@ const AuthenticationPage = () => {
     }, []);
 
     const handleSubmitLogin = async () => {
-        // try {
-        //     const response = await fetch("http://20.236.83.109:3000/api/users/login", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify({
-        //             username,
-        //             password
-        //         })
-        //     });
-        //     const data = await response.json();
-        //     if (data.message === "Auth successful") {
-        //         localStorage.removeItem("token");
-        //         localStorage.setItem("token", data.token);
-        //         setIsShowAuthModal(false);
-        //         setProfileInfo();
-        //         // window.location.reload();
-        //     }
-        // }
-        // catch (error) {
-        //     console.log("error", error);
-        // }
-        navigate('/');
+        try {
+            const response = await fetch("http://localhost:3005/api/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            });
+            const data = await response.json();
+            if (data.message === "Auth successful") {
+                localStorage.removeItem("token");
+                localStorage.setItem("token", data.token);
+                setIsShowAuthModal(false);
+                setProfileInfo();
+                navigate("/");
+                // window.location.reload();
+            } else {
+                alert("Đăng nhập thất bại");
+            }
+        }
+        catch (error) {
+            console.log("error", error);
+        }
     }
 
     return (
