@@ -6,7 +6,7 @@ import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 const serverUrl = "http://localhost:3005";
-const API_BASE_URL = 'https://136e-35-247-107-208.ngrok-free.app';
+const API_BASE_URL = 'https://8009-35-203-188-47.ngrok-free.app';
 function removeAccentsAndSpaces(str) {
     // Xóa dấu
     const withoutAccents = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -20,6 +20,8 @@ function removeAccentsAndSpaces(str) {
 const DaiVietChat = () => {
     const { id } = useParams();
     const [character, setCharacter] = useState({});
+    const [messages, setMessages] = useState([]);
+    const [inputMessage, setInputMessage] = useState('');
 
     useEffect(() => {
         const fetchCharacter = async () => {
@@ -33,6 +35,13 @@ const DaiVietChat = () => {
                 });
                 const data = await response.json();
                 setCharacter(data);
+                setMessages([
+                    {
+                        text: `Xin chào, tôi là ${data.name}, tôi có thể giúp gì cho bạn?`,
+                        sentTime: '2024-01-01T12:00:00.000Z',
+                        sender: 'Chat Bot',
+                    }
+                ]);
             } catch (error) {
                 console.log("error", error);
             }
@@ -41,14 +50,6 @@ const DaiVietChat = () => {
         fetchCharacter();
     }, [id]);
 
-    const [messages, setMessages] = useState([
-        {
-            text: `Xin chào, tôi là ${character.name}, tôi có thể giúp gì cho bạn?`,
-            sentTime: '2024-01-01T12:00:00.000Z',
-            sender: 'Chat Bot',
-        }
-    ]);
-    const [inputMessage, setInputMessage] = useState('');
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -158,7 +159,7 @@ const DaiVietChat = () => {
             <div className="chatBox-main">
                 <div className="chatBox-header">
                     <div className="chatBox-header-title">
-                        <h3>Đại tướng {character.name}</h3>
+                        <h3>Nhân vật {character.name}</h3>
                     </div>
                     {/* <div className="chatBox-header-close">
                         <i>X</i>
