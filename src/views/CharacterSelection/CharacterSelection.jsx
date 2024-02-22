@@ -86,7 +86,7 @@ const CharacterSelection = () => {
             }
             {/* <FontAwesomeIcon icon={faCartShopping} /> */}
             <div className="characterSelection-sidebar">
-                <h1 className="characterSelection-title">Chọn vị anh hùng</h1>
+                <h1 className="characterSelection-title">Chọn nhân vật</h1>
                 <ul className="characterSelection-list">
                     {
                         characters.map((character, index) => (
