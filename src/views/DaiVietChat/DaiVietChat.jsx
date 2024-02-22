@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import './DaiVietChat.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import { ToggleButton } from "../../components/buttons";
+import downloadAll from "../../services/downloader.js";
+import Video from "../../components/Video/Video.jsx";
 
 const serverUrl = "http://localhost:3005";
 const API_BASE_URL = 'https://8009-35-203-188-47.ngrok-free.app';
@@ -22,6 +25,7 @@ const DaiVietChat = () => {
     const [character, setCharacter] = useState({});
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
+    const inputRef = useRef()
 
     useEffect(() => {
         const fetchCharacter = async () => {
@@ -59,14 +63,18 @@ const DaiVietChat = () => {
 
     const handleSend = async () => {
         if (!inputMessage) return;
-        const newMessage = {
-            text: inputMessage,
-            sentTime: '2024-01-01T12:00:00.000Z',
-            sender: 'me',
-        };
-        setMessages([...messages, newMessage]);
-        setInputMessage('');
-        fetchMessage([...messages, newMessage], newMessage);
+        if (inputRef.current.getIsChecked() === false) {
+            const newMessage = {
+                text: inputMessage,
+                sentTime: '2024-01-01T12:00:00.000Z',
+                sender: 'me',
+            };
+            setMessages([...messages, newMessage]);
+            setInputMessage('');
+            fetchMessage([...messages, newMessage], newMessage);
+        } else {
+            handleSend2();
+        }
     }
 
     const fetchMessage = async (chatMessages, newMessage) => {
@@ -140,6 +148,42 @@ const DaiVietChat = () => {
         }
     }
 
+    // require video
+
+    const handleSend2 = () => {
+        if (!inputMessage) return;
+        const newMessage = {
+            text: inputMessage,
+            sentTime: '2024-01-01T12:00:00.000Z',
+            sender: 'me',
+        };
+        setMessages([...messages, newMessage]);
+        setInputMessage('');
+        fetchVideo([...messages, newMessage], newMessage);
+    }
+
+    const fetchVideo = async (chatMessages, newMessage) => {
+        const skeletonMessage = {
+            text: '...',
+            sentTime: '2024-01-01T12:00:00.000Z',
+            sender: 'Chat Bot'
+        };
+        setMessages([...chatMessages, skeletonMessage]);
+        const payload = {
+            text: newMessage.text, // Assuming newMessage has a 'text' field
+            name: newMessage.name || 'DefaultName' // Use a default name if not provided
+        };
+        console.log(payload);
+        const videoUrls = await downloadAll(newMessage.text);
+        const newMessageReply = {
+            text: "video",
+            videoUrls: videoUrls,
+            sentTime: new Date().toISOString(), // Use current time for the reply message
+            sender: 'Chat Bot'
+        };
+        setMessages([...chatMessages, newMessageReply]);
+    }
+
     return (
         <div className="chatBox">
             <div className="chatBox-video">
@@ -185,7 +229,13 @@ const DaiVietChat = () => {
                                                 //     </div>
                                                 // ) : (
                                                 <div className="chatBox-body-content-message-item-content">
-                                                    <p style={{ whiteSpace: 'pre-line' }}>{message.text}</p>
+                                                    {
+                                                        message.text === "video" ? (
+                                                            <Video videoUrls={message.videoUrls} />
+                                                        ) : (
+                                                            <p style={{ whiteSpace: 'pre-line' }}>{message.text}</p>
+                                                        )
+                                                    }
                                                 </div>
                                                 //)
                                             }
@@ -214,7 +264,8 @@ const DaiVietChat = () => {
                         onChange={(e) => setInputMessage(e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
-                    <button 
+                    <ToggleButton ref={inputRef} />
+                    <button
                         style={{ backgroundColor: isRecording && 'white' }}
                         onClick={() => handleRecord()}
                     >
