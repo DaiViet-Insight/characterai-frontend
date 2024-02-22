@@ -10,7 +10,7 @@ import downloadAll from "../../services/downloader.js";
 import Video from "../../components/Video/Video.jsx";
 
 const serverUrl = process.env.REACT_APP_CHARACTER_AI_URL;
-const API_BASE_URL = 'https://8009-35-203-188-47.ngrok-free.app';
+const API_BASE_URL = 'https://0287-34-125-21-152.ngrok-free.app';
 function removeAccentsAndSpaces(str) {
     // Xóa dấu
     const withoutAccents = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -21,6 +21,11 @@ function removeAccentsAndSpaces(str) {
     return withoutSpaces;
 }
 
+const replies = [
+    "Tôi là Trần Hưng Đạo, một vị tướng lừng danh của Việt Nam trong thời kỳ chống lại quân Mông Cổ thế kỷ 13. Tôi được nhớ đến như là người đã lãnh đạo nhân dân Việt Nam chiến thắng trong các trận chiến quan trọng, bảo vệ độc lập và tự do cho đất nước.",
+    "Tôi tự hào đã lãnh đạo dân tộc ta chiến thắng trong nhiều trận đấu quyết liệt chống lại quân xâm lược. Đặc biệt nhất là trận Bạch Đằng lịch sử, nơi chúng tôi đã sử dụng chiến thuật cọc nhọn dưới sông để đánh bại đội quân Mông Cổ hùng mạnh, bảo vệ vững chắc bờ cõi của Tổ quốc."
+];
+
 const DaiVietChat = () => {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -28,6 +33,8 @@ const DaiVietChat = () => {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const inputRef = useRef()
+
+    const [replyIndex, setReplyIndex] = useState(0);
 
     useEffect(() => {
         const fetchCharacter = async () => {
@@ -94,22 +101,26 @@ const DaiVietChat = () => {
             name: newMessage.name || 'DefaultName' // Use a default name if not provided
         };
         console.log(payload)
-        const response = await fetch(`${API_BASE_URL}/character/`, {
-            method: 'POST', // Assuming the API requires a POST request
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-        const data = await response.json();
+        // delay 30s
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        // const response = await fetch(`${API_BASE_URL}/character/`, {
+        //     method: 'POST', // Assuming the API requires a POST request
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(payload)
+        // });
+        // const data = await response.json();
+        const answer = replies[replyIndex];
         const newMessageReply = {
-            text: data.answer,
+            text: answer,
             sentTime: new Date().toISOString(), // Use current time for the reply message
             sender: 'Chat Bot'
         };
-        console.log(data.answer)
+        console.log(answer)
         setMessages([...chatMessages, newMessageReply]);
-        textToSpeech(data.answer);
+        textToSpeech(answer);
+        setReplyIndex((replyIndex + 1) % replies.length);
     }
 
     const [speech, setSpeech] = useState('');
