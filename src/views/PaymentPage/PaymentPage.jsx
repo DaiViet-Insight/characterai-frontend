@@ -5,7 +5,7 @@ import './PaymentPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
-const serverUrl = "http://localhost:3005";
+const serverUrl = process.env.REACT_APP_CHARACTER_AI_URL;
 
 const toVND = (price) => {
     try {
