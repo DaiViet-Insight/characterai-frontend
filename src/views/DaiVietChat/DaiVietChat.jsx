@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './DaiVietChat.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +22,7 @@ function removeAccentsAndSpaces(str) {
 }
 
 const DaiVietChat = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [character, setCharacter] = useState({});
     const [messages, setMessages] = useState([]);
@@ -37,6 +39,9 @@ const DaiVietChat = () => {
                         "Authorization": "Bearer " + localStorage.getItem("token")
                     }
                 });
+                if (response.status === 401) {
+                    navigate("/login");
+                }
                 const data = await response.json();
                 setCharacter(data);
                 setMessages([
