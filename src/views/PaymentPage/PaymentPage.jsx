@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './PaymentPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
@@ -51,6 +52,7 @@ const paymentMethods = [
 const PaymentPage = () => {
     const { id } = useParams();
     const [character, setCharacter] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCharacter = async () => {
@@ -62,6 +64,9 @@ const PaymentPage = () => {
                         "Authorization": "Bearer " + localStorage.getItem("token")
                     }
                 });
+                if (response.status === 401) {
+                    navigate("/login");
+                }
                 const data = await response.json();
                 setCharacter(data);
             } catch (error) {

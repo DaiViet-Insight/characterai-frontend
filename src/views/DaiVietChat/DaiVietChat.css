@@ -1,6 +1,9 @@
 .chatBox {
     display: flex;
     gap: 20px;
+    width: 90%;
+    max-width: 1000px;
+    height: 90%;
 }
 
 .chatBox-video {
@@ -14,8 +17,8 @@
 .chatBox-main {
     display: flex;
     flex-direction: column;
-    width: 700px;
-    height: 650px;
+    width: 90%;
+    height: 100%;
     background-color: #343541;
     border-radius: 10px;
     overflow: hidden;

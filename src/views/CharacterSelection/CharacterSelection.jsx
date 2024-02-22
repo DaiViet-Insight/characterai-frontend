@@ -24,6 +24,9 @@ const CharacterSelection = () => {
                         "Authorization": "Bearer " + localStorage.getItem("token")
                     }
                 });
+                if (response.status === 401) {
+                    navigate("/login");
+                }
                 const data = await response.json();
                 if (data.length > 0) {
                     setSelectedCharacter(data[0]);
@@ -31,11 +34,12 @@ const CharacterSelection = () => {
                 setCharacters(data);
             } catch (error) {
                 console.log("error", error);
+                navigate("/login");
             }
         }
 
         fetchCharacters();
-    }, []);
+    }, [navigate]);
 
 
     const handleSelectCharater = (id) => {
@@ -49,7 +53,7 @@ const CharacterSelection = () => {
     return (
         <div className="characterSelection">
             {
-                characters && characters.map((character, index) => (
+                characters.length > 0 && characters.map((character, index) => (
                     <img key={index} src={`${serverUrl}${character.background}`}
                         className={
                             selectedCharacter.name === character.name ? "characterSelection-background characterSelection-background__selected" : "characterSelection-background"
@@ -89,7 +93,7 @@ const CharacterSelection = () => {
                 <h1 className="characterSelection-title">Chọn nhân vật</h1>
                 <ul className="characterSelection-list">
                     {
-                        characters.map((character, index) => (
+                        characters.length > 0 && characters.map((character, index) => (
                             <li key={index} className={
                                 selectedCharacter.name === character.name ? "characterSelection-item characterSelection-item__selected" : "characterSelection-item"
                             } onClick={() => setSelectedCharacter(character)
