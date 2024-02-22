@@ -26,7 +26,7 @@ const AuthenticationPage = () => {
 
     const handleSubmitLogin = async () => {
         try {
-            const response = await fetch("http://localhost:3005/api/users/login", {
+            const response = await fetch(`${process.env.REACT_APP_CHARACTER_AI_URL}/api/users/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

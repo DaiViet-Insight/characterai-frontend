@@ -7,7 +7,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
-const serverUrl = "http://localhost:3005";
+const serverUrl = process.env.REACT_APP_CHARACTER_AI_URL;
 
 const CharacterSelection = () => {
     const [characters, setCharacters] = useState([]);
@@ -17,7 +17,7 @@ const CharacterSelection = () => {
     useEffect(() => {
         const fetchCharacters = async () => {
             try {
-                const response = await fetch("http://localhost:3005/api/characters", {
+                const response = await fetch(`${serverUrl}/api/characters`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
