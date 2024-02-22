@@ -8,7 +8,7 @@ import { ToggleButton } from "../../components/buttons";
 import downloadAll from "../../services/downloader.js";
 import Video from "../../components/Video/Video.jsx";
 
-const serverUrl = "http://localhost:3005";
+const serverUrl = process.env.REACT_APP_CHARACTER_AI_URL;
 const API_BASE_URL = 'https://8009-35-203-188-47.ngrok-free.app';
 function removeAccentsAndSpaces(str) {
     // Xóa dấu
